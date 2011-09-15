@@ -2,7 +2,7 @@
 (function () {
 	
 	var FREQUENCY = 5000,
-		ACCEPTABLE = ['$', 'jQuery', 'flasher'],
+		ACCEPTABLE = [],	//'$', 'jQuery', 'flasher', 'Sylvester'],
 		TOLERANCE = 0,
 		
 		iframe = document.createElement ('iframe'),
@@ -39,6 +39,11 @@
 		}
 	}
 	
+
+	function addCss (element, css) {
+		for (var i in css) element.style[i] = css[i];
+	}
+	
 	
 	function showWarning (pollutants) {
 		var text,
@@ -48,8 +53,45 @@
 
 		if (!dialog) {
 			dialog = {};
+
+			dialog.mask = document.createElement ('div');
+			addCss (dialog.mask, {
+				position: 'fixed',
+				top: '0',
+				left: '0',
+				width: '100%',
+				height: '100%',
+				backgroundColor: 'rgba(0,0,0,.2)',
+				zIndex: '9999'
+			});
+
+			dialog.mask.addEventListener ('click', hideDialog);
+			
+			
 			dialog.container = document.createElement ('div');
+			addCss (dialog.container, {
+				width: '500px',
+				margin: '100px auto',
+				padding: '12px',
+				backgroundColor: 'lightblue'
+			});
+
+			dialog.mask.appendChild (dialog.container);
+
+
 			dialog.list = document.createElement ('ul');
+
+			
+			dialog.list = document.createElement ('ul');
+			addCss (dialog.list, {
+				height: '250px',
+				overflow: 'auto',
+				listStyle: 'none',
+				margin: '0',
+				padding: '0',
+				backgroundColor: 'rgba(255,255,255,.6)'
+			});
+			
 			dialog.container.appendChild (dialog.list);
 		}
 
@@ -57,23 +99,46 @@
 
 		for (i in pollutants) {
 			count++;
+
 			item = document.createElement ('li');
 			item.innerHTML = i;
+			addCss (item, {
+				fontFamily: 'cambria, palatino, georgia, serif',
+				fontSize: '16px',
+				color: '#000',
+				height: '35px',
+				lineHeight: '35px',
+				padding: '0 16px',
+				borderBottom: '1px dotted rgba(0,0,0,.2)',
+				cursor: 'pointer'
+			});
+
+			(function (i) {
+				item.addEventListener ('click', function () {
+					console.log (i, window[i]);
+				});
+			})(i);
+			
 			dialog.list.appendChild (item);
 		}
 
 
 		if (!warning) {
 			warning = document.createElement ('p');
-			warning.style.fontFamily = 'cambria, palatino, georgia, serif';
-			warning.style.fontSize = '24px';
-			warning.style.margin = 0;
-			warning.style.padding = '16px 32px';
-			warning.style.position = 'fixed';
-			warning.style.top = 0;
-			warning.style.right = 0;
-			warning.style.backgroundColor = '#d00';
-			warning.style.color = '#eee';
+			
+			addCss (warning, {
+				fontFamily: 'cambria, palatino, georgia, serif',
+				fontSize: '24px',
+				margin: 0,
+				padding: '16px 32px',
+				position: 'fixed',
+				top: 0,
+				right: 0,
+				backgroundColor: '#d00',
+				color: '#eee',
+				cursor: 'pointer',
+				zIndex: '9998'
+			});
 		
 			warning.addEventListener ('click', showDialog);		
 		}
@@ -94,12 +159,14 @@
 	
 	
 	function showDialog () {
-		document.body.appendChild (dialog.container);
+		document.body.appendChild (dialog.mask);
+		window.clearInterval (interval);
 	}
 	
 	
 	function hideDialog () {
-		document.body.removeChild (dialog.container);
+		document.body.removeChild (dialog.mask);
+		interval = window.setInterval (checkNamespace, FREQUENCY)
 	}
 	
 	
