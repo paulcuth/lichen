@@ -1,9 +1,9 @@
 
 (function () {
 	
-	var FREQUENCY = 5000,
-		ACCEPTABLE = [],	//'$', 'jQuery', 'flasher', 'Sylvester'],
-		TOLERANCE = 0,
+	var FREQUENCY = /* replace:frequency */5000,
+		ACCEPT = /* replace:accept */[],
+		TOLERANCE = /* replace:tolerence */0,
 		
 		iframe = document.createElement ('iframe'),
 		interval = window.setInterval (checkNamespace, FREQUENCY),
@@ -22,7 +22,7 @@
 			
 			if (window[i] !== undefined && 
 				iframe.contentWindow[i] === undefined &&
-				ACCEPTABLE.indexOf (i) === -1) {
+				ACCEPT.indexOf (i) === -1) {
 					
 				count++;
 				pollutants[i] = window[i];
@@ -49,7 +49,8 @@
 		var text,
 			count = 0,
 			item,
-			i;
+			i,
+			p;
 
 		if (!dialog) {
 			dialog = {};
@@ -73,13 +74,14 @@
 				width: '500px',
 				margin: '100px auto',
 				padding: '12px',
-				backgroundColor: 'lightblue'
+				backgroundColor: '#ccd',
+				borderRadius: '8px'
 			});
 
 			dialog.mask.appendChild (dialog.container);
 
 
-			dialog.list = document.createElement ('ul');
+			p = document.createElement ('p');
 
 			
 			dialog.list = document.createElement ('ul');
@@ -89,7 +91,8 @@
 				listStyle: 'none',
 				margin: '0',
 				padding: '0',
-				backgroundColor: 'rgba(255,255,255,.6)'
+				backgroundColor: 'rgba(255,255,255,.6)',
+				borderRadius: '8px'
 			});
 			
 			dialog.container.appendChild (dialog.list);
@@ -137,6 +140,7 @@
 				backgroundColor: '#d00',
 				color: '#eee',
 				cursor: 'pointer',
+				borderBottomLeftRadius: '8px',
 				zIndex: '9998'
 			});
 		
