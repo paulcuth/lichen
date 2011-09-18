@@ -1,0 +1,94 @@
+div.lichen-mask {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.2);
+	z-index: 9999
+}
+
+
+div.lichen-mask div.lichen-container {
+	width: 500px;
+	margin: 100px auto;
+	padding: 12px;
+	background-color: #aab;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+
+div.lichen-mask ul {
+	height: 250px;
+	overflow: auto;
+	listStyle: none;
+	margin: 0;
+	padding: 0;
+	background-color: rgba(255,255,255,.75);
+	border-radius: 8px;
+}
+
+
+div.lichen-mask li {
+	font-family: "cambria", "palatino", "georgia", "serif";
+	font-fize: 16px;
+	color: #000;
+	height: 35px;
+	line-height: 35px;
+	padding: 0 16px;
+	border-bottom: 1px dotted rgba(0,0,0,.2);
+	cursor: pointer;
+}
+
+
+div.lichen-mask li a {
+	color: rgba(0,0,0,.75);
+}
+
+
+div.lichen-mask li.ok,
+div.lichen-mask li.ok a {
+	color: rgba(50,150,50,.6);
+}
+
+
+div.lichen-mask span.lichen-name {
+	display: inline-block;
+	width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+
+div.lichen-mask span.lichen-description {
+	color: #666;
+}
+
+
+div.lichen-mask span.loading {
+	background: url('./loading.gif') left center no-repeat;
+}
+
+
+div.lichen-mask button {
+	float: right;
+	margin: 4px 0 -4px;
+}
+
+
+p.lichen-warning {
+	font-family: "cambria", "palatino", "georgia", "serif";
+	font-size: 24px;
+	margin: 0;
+	padding: 16px 32px;
+	position: fixed;
+	top: 0;
+	right: 0;
+	background-color: #d00;
+	color: #eee;
+	cursor: pointer;
+	border-bottom-left-radius: 8px;
+	z-index: 9998;
+}
+

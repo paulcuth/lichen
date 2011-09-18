@@ -2,13 +2,26 @@
 (function () {
 	
 	var FREQUENCY = /* replace:frequency */5000,
-		ACCEPT = /* replace:accept */[],
+		ACCEPT = /* replace:accept */['jQuery'],
 		TOLERANCE = /* replace:tolerence */0,
 		
 		iframe = document.createElement ('iframe'),
 		interval = window.setInterval (checkNamespace, FREQUENCY),
+		cache = {},
 		warning,
 		dialog;
+	
+	
+	
+	
+	function loadCss () {
+		var link = document.createElement ('link');
+		link.setAttribute ('rel', 'stylesheet');
+		link.setAttribute ('href', './lichen.css');	// TODO: define absolute path when not offline
+		document.getElementsByTagName ('head')[0].appendChild (link);
+	}
+	
+	
 	
 	
 	function checkNamespace () {
@@ -18,13 +31,9 @@
 			
 		document.body.appendChild (iframe);
 		
-		for (i in window) {
-			
-			if (window[i] !== undefined && 
-				iframe.contentWindow[i] === undefined &&
-				ACCEPT.indexOf (i) === -1) {
-					
-				count++;
+		for (i in window) {			
+			if (window[i] !== undefined && iframe.contentWindow[i] === undefined) {
+				if (ACCEPT.indexOf (i) === -1) count++;
 				pollutants[i] = window[i];
 			}
 		}
@@ -40,9 +49,13 @@
 	}
 	
 
+
+
 	function addCss (element, css) {
 		for (var i in css) element.style[i] = css[i];
 	}
+	
+	
 	
 	
 	function showWarning (pollutants) {
@@ -50,100 +63,73 @@
 			count = 0,
 			item,
 			i,
-			p;
+			close,
+			span,
+			ok = [];
 
 		if (!dialog) {
 			dialog = {};
 
 			dialog.mask = document.createElement ('div');
-			addCss (dialog.mask, {
-				position: 'fixed',
-				top: '0',
-				left: '0',
-				width: '100%',
-				height: '100%',
-				backgroundColor: 'rgba(0,0,0,.2)',
-				zIndex: '9999'
-			});
-
+			dialog.mask.className = 'lichen-mask';
 			dialog.mask.addEventListener ('click', hideDialog);
 			
-			
 			dialog.container = document.createElement ('div');
-			addCss (dialog.container, {
-				width: '500px',
-				margin: '100px auto',
-				padding: '12px',
-				backgroundColor: '#ccd',
-				borderRadius: '8px'
+			dialog.container.className = 'lichen-container';
+			
+			dialog.container.addEventListener ('click', function (e) {
+				if (e.stopPropagation) e.stopPropagation ();
+				e.cancelBubble = true;
 			});
 
 			dialog.mask.appendChild (dialog.container);
 
-
-			p = document.createElement ('p');
-
-			
 			dialog.list = document.createElement ('ul');
-			addCss (dialog.list, {
-				height: '250px',
-				overflow: 'auto',
-				listStyle: 'none',
-				margin: '0',
-				padding: '0',
-				backgroundColor: 'rgba(255,255,255,.6)',
-				borderRadius: '8px'
-			});
-			
 			dialog.container.appendChild (dialog.list);
+
+			close = document.createElement ('button');
+			close.innerHTML = 'Close';
+			close.addEventListener ('click', hideDialog);
+			dialog.container.appendChild (close);
 		}
 
 		dialog.list.innerHTML = '';
 
 		for (i in pollutants) {
-			count++;
-
 			item = document.createElement ('li');
-			item.innerHTML = i;
-			addCss (item, {
-				fontFamily: 'cambria, palatino, georgia, serif',
-				fontSize: '16px',
-				color: '#000',
-				height: '35px',
-				lineHeight: '35px',
-				padding: '0 16px',
-				borderBottom: '1px dotted rgba(0,0,0,.2)',
-				cursor: 'pointer'
-			});
-
-			(function (i) {
+			
+			(function (i, item) {
 				item.addEventListener ('click', function () {
 					console.log (i, window[i]);
 				});
-			})(i);
+			})(i, item);
+
+			span = document.createElement ('span');
+			span.className = 'lichen-name';
+			span.innerHTML = i;
+			item.appendChild (span);			
+					
+			span = document.createElement ('span');
+			item.appendChild (span);
 			
-			dialog.list.appendChild (item);
+			if (ACCEPT.indexOf (i) !== -1) {
+				item.className = 'ok';
+				ok.push (item);
+
+			} else {
+				dialog.list.appendChild (item);
+				count++;
+			}
+
+			lookupVar (i, span);
 		}
 
+		for (i in ok) dialog.list.appendChild (ok[i]);
+		
 
 		if (!warning) {
 			warning = document.createElement ('p');
-			
-			addCss (warning, {
-				fontFamily: 'cambria, palatino, georgia, serif',
-				fontSize: '24px',
-				margin: 0,
-				padding: '16px 32px',
-				position: 'fixed',
-				top: 0,
-				right: 0,
-				backgroundColor: '#d00',
-				color: '#eee',
-				cursor: 'pointer',
-				borderBottomLeftRadius: '8px',
-				zIndex: '9998'
-			});
-		
+			warning.className = 'lichen-warning';
 			warning.addEventListener ('click', showDialog);		
 		}
 
@@ -152,8 +138,9 @@
 		text = count + ' variables in global namespace.';
 		if (count == 1) text = text.replace ('s', '');
 		warning.innerHTML = text;
-
 	}
+	
+	
 	
 	
 	function hideWarning () {
@@ -162,18 +149,73 @@
 	}
 	
 	
+	
+	
 	function showDialog () {
 		document.body.appendChild (dialog.mask);
 		window.clearInterval (interval);
 	}
 	
 	
-	function hideDialog () {
+	
+	
+	function hideDialog (event) {
 		document.body.removeChild (dialog.mask);
-		interval = window.setInterval (checkNamespace, FREQUENCY)
+		interval = window.setInterval (checkNamespace, FREQUENCY);
+	}
+
+
+
+
+	function lookupVar (name, element) {
+		var a, 
+			text;
+		
+		element.className = 'lichen-description loading';
+
+		var callback = function (data) {
+			cache[name] = data;
+			element.className = 'lichen-description';		
+		
+			if (data) {
+				text = data.desc;
+				
+				if (!data.url) {
+					element.innerHTML = text;
+					
+				} else {
+					a = document.createElement ('a');
+					a.href = 'http://' + data.url;
+					a.innerHTML = text;
+					element.appendChild (a);
+				}			
+			}
+		};
+
+		if (cache[name] !== undefined) {
+			callback (cache[name]);
+			return;
+		}
+
+		ajax ('./lookup.php?q=' + name + '&cbfunc=?', callback);	// TODO: Absolute path		
+	}
+	
+		
+	
+	
+	function ajax (url, callback) {
+		// TODO
+		$.ajax ({
+			url: url,
+			dataType: 'jsonp', 
+			success: callback
+		});
 	}
 	
 	
+	
+	
+	loadCss ();
 	setTimeout (checkNamespace, 100);
 	
 })();
