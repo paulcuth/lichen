@@ -4,7 +4,7 @@ div.lichen-mask {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0,.2);
+	background-color: rgba(0,0,0,.25);
 	z-index: 9999
 }
 
@@ -32,7 +32,7 @@ div.lichen-mask ul {
 
 div.lichen-mask li {
 	font-family: "cambria", "palatino", "georgia", "serif";
-	font-fize: 16px;
+	font-size: 16px;
 	color: #000;
 	height: 35px;
 	line-height: 35px;
@@ -85,10 +85,37 @@ p.lichen-warning {
 	position: fixed;
 	top: 0;
 	right: 0;
-	background-color: #d00;
+	background-color: #c00;
 	color: #eee;
 	cursor: pointer;
-	border-bottom-left-radius: 8px;
+	border-radius: 0 0 0 8px;
 	z-index: 9998;
 }
 
+
+p.lichen-warning.ok {
+	background-color: #090;
+}
+
+
+p.lichen-warning.top-left {
+	left: 0;
+	right: auto;
+	border-radius: 0 0 8px;
+}
+
+
+p.lichen-warning.bottom-left {
+	top: auto;
+	bottom: 0;
+	left: 0;
+	right: auto;
+	border-radius: 0 8px 0 0;
+}
+
+
+p.lichen-warning.bottom-right {
+	top: auto;
+	bottom: 0;
+	border-radius: 8px 0 0 0;
+}

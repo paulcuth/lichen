@@ -2,8 +2,12 @@
 (function () {
 	
 	var FREQUENCY = /* replace:frequency */5000,
-		ACCEPT = /* replace:accept */['jQuery'],
+		ACCEPT = /* replace:accept */[],
 		TOLERANCE = /* replace:tolerence */0,
+		SHOW_OK = /* replace:showok */false,
+		POSITION = /* replace:position */'top-right',
+		
+		SERVER_URL = 'http://localhost',
 		
 		iframe = document.createElement ('iframe'),
 		interval = window.setInterval (checkNamespace, FREQUENCY),
@@ -17,7 +21,7 @@
 	function loadCss () {
 		var link = document.createElement ('link');
 		link.setAttribute ('rel', 'stylesheet');
-		link.setAttribute ('href', './lichen.css');	// TODO: define absolute path when not offline
+		link.setAttribute ('href', SERVER_URL + '/lichen/lichen.css');
 		document.getElementsByTagName ('head')[0].appendChild (link);
 	}
 	
@@ -40,7 +44,7 @@
 
 		document.body.removeChild (iframe);
 		
-		if (count > TOLERANCE) {
+		if (count > TOLERANCE || SHOW_OK) {
 			showWarning (pollutants);
 
 		} else if (warning && warning.innerHTML) {
@@ -129,14 +133,22 @@
 
 		if (!warning) {
 			warning = document.createElement ('p');
-			warning.className = 'lichen-warning';
-			warning.addEventListener ('click', showDialog);		
+			warning.addEventListener ('click', showDialog);
 		}
 
+		warning.className = 'lichen-warning' + ((count <= TOLERANCE)? ' ok' : '');
+		if (['top-left', 'bottom-left', 'bottom-right'].indexOf (POSITION) !== -1) warning.className += ' ' + POSITION;
+		
 		document.body.appendChild (warning);
 
 		text = count + ' variables in global namespace.';
-		if (count == 1) text = text.replace ('s', '');
+		
+		if (count === 1) {
+			text = text.replace ('s', '');
+		} else if (count === 0) {
+			text = text.replace ('0', 'No');
+		}
+		
 		warning.innerHTML = text;
 	}
 	
@@ -197,21 +209,51 @@
 			return;
 		}
 
-		ajax ('./lookup.php?q=' + name + '&cbfunc=?', callback);	// TODO: Absolute path		
+		makeJSONPRequest (SERVER_URL + '/lichen/lookup.php?q=' + name + '&cbfunc=?', callback);
 	}
 	
 		
 	
 	
-	function ajax (url, callback) {
-		// TODO
-		$.ajax ({
-			url: url,
-			dataType: 'jsonp', 
-			success: callback
-		});
+	function makeJSONPRequest (url, callback) {
+
+		if (!window.lichen) {
+			window.lichen = {
+				callbacks: []
+			};
+		}
+		
+		var index = window.lichen.callbacks.length,
+			script = document.createElement ('script'),
+			head = document.getElementsByTagName ('head')[0],
+			scriptId = 'lichen-jsonp-' + index;
+		
+		window.lichen.callbacks[index] = function (data) {
+			delete window.lichen.callbacks[index];
+
+			var script = document.getElementById (scriptId),
+				empty = true,
+				i;
+			
+			head.removeChild (script);
+			
+			for (i in window.lichen.callbacks) {
+				if (window.lichen.callbacks !== undefined) {
+					empty = false;
+					break;
+				}
+			}
+			
+			if (empty) delete window.lichen;	
+			callback (data);
+		};
+		
+
+		script.id = scriptId;
+		script.src = url.replace ('cbfunc=?', 'cbfunc=' + encodeURI ('window.lichen.callbacks[' + index + ']'));
+		head.appendChild (script);
 	}
-	
+
 	
 	
 	
