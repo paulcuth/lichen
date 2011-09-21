@@ -69,7 +69,10 @@
 			i,
 			close,
 			span,
-			ok = [];
+			ok = [],
+			valueElement,
+			inspector,
+			close;
 
 		if (!dialog) {
 			dialog = {};
@@ -101,20 +104,16 @@
 
 		for (i in pollutants) {
 			item = document.createElement ('li');
+			valueElement = document.createElement ('p');
+			item.appendChild (valueElement);
 			
-			(function (i, item) {
-				item.addEventListener ('click', function () {
-					console.log (i, window[i]);
-				});
-			})(i, item);
-
 			span = document.createElement ('span');
 			span.className = 'lichen-name';
 			span.innerHTML = i;
-			item.appendChild (span);			
+			valueElement.appendChild (span);
 					
 			span = document.createElement ('span');
-			item.appendChild (span);
+			valueElement.appendChild (span);
 			
 			if (ACCEPT.indexOf (i) !== -1) {
 				item.className = 'ok';
@@ -125,6 +124,26 @@
 				count++;
 			}
 
+			inspector = document.createElement ('div');
+			inspector.className = 'inspector';
+			inspector.style.height = '0px';
+			inspector.style.padding = '0px 8px';
+			item.appendChild (inspector);
+
+			(function (i, element, inspector) {
+				element.addEventListener ('click', function () {					
+					if (inspector.style.height === '0px') {
+						inspector.style.height = 'auto';
+						inspector.style.padding = '8px';
+					} else {
+						inspector.style.height = '0px';
+						inspector.style.padding = '0px 8px';
+					}
+				});
+			})(i, valueElement, inspector);
+
+			
+			displayValue (pollutants[i], inspector);
 			lookupVar (i, span);
 		}
 
@@ -141,7 +160,7 @@
 		
 		document.body.appendChild (warning);
 
-		text = count + ' variables in global namespace.';
+		text = count + ' variables in global namespace. ';
 		
 		if (count === 1) {
 			text = text.replace ('s', '');
@@ -150,6 +169,24 @@
 		}
 		
 		warning.innerHTML = text;
+
+		close = document.createElement ('a');
+		close.href = '#';
+		close.innerHTML = 'Stop';
+		close.title = 'Stop monitoring';
+		
+		close.addEventListener ('click', function (e) {
+			window.clearInterval (interval);
+			hideWarning ();
+			
+			if (e.preventDefault) e.preventDefault ();
+			e.returnValue = false;
+
+			if (e.stopPropagation) e.stopPropagation ();
+			e.cancelBubble = true;
+		});
+		
+		warning.appendChild (close);
 	}
 	
 	
@@ -252,6 +289,79 @@
 		script.id = scriptId;
 		script.src = url.replace ('cbfunc=?', 'cbfunc=' + encodeURI ('window.lichen.callbacks[' + index + ']'));
 		head.appendChild (script);
+	}
+
+	
+	
+	
+	function displayValue (obj, parent, name) {
+		name = (name !== undefined)? '<span>' + name + ':</span> ' : '';
+		
+		var div = document.createElement ('div'),
+			elements,
+			element,
+			caption,
+			pos;
+
+		div.className = 'element';
+				
+		div.addEventListener ('click', function (e) {
+			if (e.stopPropagation) e.stopPropagation ();
+			e.returnValue = false;
+		});
+
+		
+		if (typeof obj == "number" || typeof obj == "boolean" || typeof obj == "undefined") {
+			div.innerHTML = name + obj;
+				
+		} else if (typeof obj == "string") {
+			div.innerHTML = name + '"' + obj + '"';
+				
+		} else if (typeof obj == "function") {
+			caption = obj.toString ();
+			if ((pos = caption.indexOf ('{')) > -1) caption = caption.substr (0, pos) + '{ &hellip; }';
+			div.innerHTML = name + caption;
+				
+		} else {
+			div.innerHTML = name + ((obj instanceof Array)? 'Array (' + obj.length + ')' : 'Object');			
+			div.className += ' expandable';
+
+			elements = document.createElement ('div');
+			elements.style.display = 'none';
+			div.appendChild (elements);
+
+			(function (obj, div, element, elements) {
+				var opened = false;
+
+				div.addEventListener ('click', function (e) {
+					if (!opened) {
+						opened = true;
+						
+						for (var i in obj) {
+							if (obj.hasOwnProperty (i)) {
+								element = document.createElement ('div');
+								elements.appendChild (element);
+				
+								displayValue (obj[i], element, i);
+							}
+						}
+					}
+
+
+					if (this.className == 'element expanded') {
+						this.className = 'element expandable';
+						elements.style.display = 'none';
+				
+					} else {
+						this.className = 'element expanded';
+						elements.style.display = 'block';
+					}
+				});
+			})(obj, div, element, elements);
+							
+		}
+		
+		parent.appendChild (div);
 	}
 
 	

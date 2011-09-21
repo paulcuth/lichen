@@ -31,23 +31,73 @@ div.lichen-mask ul {
 
 
 div.lichen-mask li {
-	font-family: "cambria", "palatino", "georgia", "serif";
-	font-size: 16px;
 	color: #000;
-	height: 35px;
-	line-height: 35px;
-	padding: 0 16px;
 	border-bottom: 1px dotted rgba(0,0,0,.2);
-	cursor: pointer;
+	line-height: 35px;
+	text-align: left;
 }
 
+
+div.lichen-mask li p {
+	font-family: "cambria", "palatino", "georgia", "serif";
+	font-size: 16px;
+	padding: 0 16px;
+	margin: 0;
+	cursor: pointer;
+	text-align: left;
+}
+	
+	
+div.lichen-mask div.inspector {
+	background-color: #ddd;
+}
+
+
+div.lichen-mask div.inspector {
+	background-color: #ccc;
+	box-shadow: inset 0 0 16px rgba(100,100,100,.2);
+	font-family: monospace;
+	line-height: 16px;
+	padding: 0 8px;
+	overflow: hidden;
+	-webkit-transition: padding .1s linear;
+}
+
+
+div.lichen-mask div.inspector div.element {
+	padding-left: 20px;
+	background: 5px 2px no-repeat;
+	overflow: hidden;
+	height: 16px;
+}
+
+div.lichen-mask div.inspector div {
+	overflow: hidden;
+}
+
+			
+div.lichen-mask div.inspector div.expandable {
+	background-image: url('./img/tree-plus.png');
+}
+
+			
+div.lichen-mask div.inspector div.expanded {
+	background-image: url('./img/tree-minus.png');
+	height: auto;
+}
+
+
+div.lichen-mask div.inspector div span {
+	color: purple;
+}
+			
 
 div.lichen-mask li a {
 	color: rgba(0,0,0,.75);
 }
 
 
-div.lichen-mask li.ok,
+div.lichen-mask li.ok p,
 div.lichen-mask li.ok a {
 	color: rgba(50,150,50,.6);
 }
@@ -67,7 +117,7 @@ div.lichen-mask span.lichen-description {
 
 
 div.lichen-mask span.loading {
-	background: url('./loading.gif') left center no-repeat;
+	background: url('./img/loading.gif') left center no-repeat;
 }
 
 
@@ -79,9 +129,9 @@ div.lichen-mask button {
 
 p.lichen-warning {
 	font-family: "cambria", "palatino", "georgia", "serif";
-	font-size: 24px;
+	font-size: 16px;
 	margin: 0;
-	padding: 16px 32px;
+	padding: 8px 16px;
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -90,6 +140,18 @@ p.lichen-warning {
 	cursor: pointer;
 	border-radius: 0 0 0 8px;
 	z-index: 9998;
+}
+
+
+p.lichen-warning a {
+	display: inline-block;
+	text-indent: -9999px;
+	height: 13px;
+	width: 13px;
+	background: url('./img/close.png') top left no-repeat;
+	position: relative;
+	left: 4px;
+	top: 1px;
 }
 
 
