@@ -311,7 +311,7 @@
 		});
 
 		
-		if (typeof obj == "number" || typeof obj == "boolean" || typeof obj == "undefined") {
+		if (typeof obj == "number" || typeof obj == "boolean" || typeof obj == "undefined" || obj === null) {
 			div.innerHTML = name + obj;
 				
 		} else if (typeof obj == "string") {
@@ -327,24 +327,34 @@
 			div.className += ' expandable';
 
 			elements = document.createElement ('div');
-			elements.style.display = 'none';
 			div.appendChild (elements);
 
 			(function (obj, div, element, elements) {
-				var opened = false;
+				var opened = false,
+					count = 0;
 
 				div.addEventListener ('click', function (e) {
 					if (!opened) {
 						opened = true;
 						
 						for (var i in obj) {
-							if (obj.hasOwnProperty (i)) {
+							
+//							if (obj.hasOwnProperty (i)) {
+								count++;
+
 								element = document.createElement ('div');
 								elements.appendChild (element);
 				
 								displayValue (obj[i], element, i);
-							}
-						}
+//							}
+						}	
+						
+						if (!count) {
+							element = document.createElement ('div');
+							element.className = 'empty';
+							element.innerHTML = '(Empty)';
+							elements.appendChild (element);
+						}							
 					}
 
 
@@ -356,6 +366,7 @@
 						this.className = 'element expanded';
 						elements.style.display = 'block';
 					}
+					
 				});
 			})(obj, div, element, elements);
 							

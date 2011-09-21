@@ -5,7 +5,7 @@ div.lichen-mask {
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0,0,0,.25);
-	z-index: 9999
+	z-index: 9999;
 }
 
 
@@ -13,7 +13,7 @@ div.lichen-mask div.lichen-container {
 	width: 500px;
 	margin: 100px auto;
 	padding: 12px;
-	background-color: #aab;
+	background-color: #FFB515;
 	border-radius: 8px;
 	overflow: hidden;
 }
@@ -22,7 +22,7 @@ div.lichen-mask div.lichen-container {
 div.lichen-mask ul {
 	height: 250px;
 	overflow: auto;
-	listStyle: none;
+	list-style: none;
 	margin: 0;
 	padding: 0;
 	background-color: rgba(255,255,255,.75);
@@ -35,6 +35,8 @@ div.lichen-mask li {
 	border-bottom: 1px dotted rgba(0,0,0,.2);
 	line-height: 35px;
 	text-align: left;
+	margin: 0;
+	padding: 0;	
 }
 
 
@@ -50,6 +52,7 @@ div.lichen-mask li p {
 	
 div.lichen-mask div.inspector {
 	background-color: #ddd;
+	cursor: default;
 }
 
 
@@ -64,7 +67,8 @@ div.lichen-mask div.inspector {
 }
 
 
-div.lichen-mask div.inspector div.element {
+div.lichen-mask div.inspector div.element,
+div.lichen-mask div.inspector div.empty {
 	padding-left: 20px;
 	background: 5px 2px no-repeat;
 	overflow: hidden;
@@ -89,6 +93,12 @@ div.lichen-mask div.inspector div.expanded {
 
 div.lichen-mask div.inspector div span {
 	color: purple;
+}
+			
+
+div.lichen-mask div.inspector div.empty {
+	color: #888;
+	font-style: italic;
 }
 			
 
