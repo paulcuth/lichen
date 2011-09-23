@@ -1,7 +1,7 @@
 <?
 	header ('Content-type: text/javascript');
 	
-	$js = file_get_contents ('./lichen.min.js');
+	$js = file_get_contents ('./lichen.js');
 	
 	while (preg_match ('/((\/\* replace:(.*?) \*\/).*?),/', $js, $matches)) {
 		if ($val = $_GET[$matches[3]]) {
