@@ -1,3 +1,8 @@
+iframe.lichen {
+	display: none;
+}
+
+
 div.lichen-mask {
 	position: fixed;
 	top: 0;
@@ -13,7 +18,7 @@ div.lichen-mask div.lichen-container {
 	width: 500px;
 	margin: 100px auto;
 	padding: 12px;
-	background-color: #FFB515;
+	background-color: #ffa505;
 	border-radius: 8px;
 	overflow: hidden;
 }
