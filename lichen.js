@@ -141,7 +141,7 @@
 	/**
 	 * Styles a DOM element using the fields of an object.
 	 * @param {HTMLElement} element The DOM element to be styled.
-	 * @param {object} css Object containing the CSS style parameters.
+	 * @param {Object} css Object containing the CSS style parameters.
 	 */
 	function addCss (element, css) {
 		for (var i in css) element.style[i] = css[i];
@@ -151,33 +151,21 @@
 	
 	
 	/**
-	 * Displays a warning on the page.
-	 * @param {object} pollutants Object containing references to the global variables that are not in the acceptable list.
+	 * Shows a warning on the page.
+	 * @param {Object} pollutants Object containing references to the global variables that are not in the acceptable list.
 	 */
 	function showWarning (pollutants) {
-		var text,
-			count = 0,
+		var count = 0,
 			item,
 			i,
-			span,
-			ok = [],
-			valueElement,
-			inspector,
-			close;
+			ok = [];
 
 		if (!dialog) createDialog ();
 		dialog.list.innerHTML = '';
 		
 
 		for (i in pollutants) {
-			item = document.createElement ('li');
-			valueElement = document.createElement ('p');
-			item.appendChild (valueElement);
-			
-			span = document.createElement ('span');
-			span.className = 'lichen-name';
-			span.innerHTML = i;
-			valueElement.appendChild (span);
+			item = createListItem (i, pollutants[i]);
 					
 			if (ACCEPT.indexOf (i) !== -1) {
 				item.className = 'ok';
@@ -187,31 +175,78 @@
 				dialog.list.appendChild (item);
 				count++;
 			}
-
-			inspector = document.createElement ('div');
-			inspector.className = 'inspector';
-			inspector.style.height = '0px';
-			inspector.style.padding = '0px 8px';
-			item.appendChild (inspector);
-
-			(function (i, element, inspector) {
-				element.addEventListener ('click', function () {					
-					if (inspector.style.height === '0px') {
-						inspector.style.height = 'auto';
-						inspector.style.padding = '8px';
-					} else {
-						inspector.style.height = '0px';
-						inspector.style.padding = '0px 8px';
-					}
-				}, false);
-			})(i, valueElement, inspector);
-
-			
-			displayValue (pollutants[i], inspector);
 		}
 
 		for (i in ok) dialog.list.appendChild (ok[i]);
+		createWarning (count);
 		
+		if (POP_UP) showDialog ();
+	}
+	
+
+
+
+	/**
+	 * Creates a new item in the variable list.
+	 * @param {String} key Name of the variable.
+	 * @param {Object} value Value of the variable.
+	 */
+	function createListItem (key, value) {	
+		var item = document.createElement ('li'),
+			valueElement = document.createElement ('p'),
+			span = document.createElement ('span'),
+			inspector;
+
+		item.appendChild (valueElement);
+		
+		span.className = 'lichen-name';
+		span.innerHTML = key;
+		valueElement.appendChild (span);
+				
+		inspector = createInspector (valueElement);
+		item.appendChild (inspector);
+
+		displayValue (value, inspector);
+		
+		return item;
+	}
+	
+	
+
+
+	/**
+	 * Creates a new object inspector element.
+	 * @param {HTMLElement} element Parent element.
+	 */
+	function createInspector (element) {	
+		var inspector = document.createElement ('div');
+		inspector.className = 'inspector';
+		inspector.style.height = '0px';
+		inspector.style.padding = '0px 8px';
+	
+		element.addEventListener ('click', function () {					
+			if (inspector.style.height === '0px') {
+				inspector.style.height = 'auto';
+				inspector.style.padding = '8px';
+			} else {
+				inspector.style.height = '0px';
+				inspector.style.padding = '0px 8px';
+			}
+		}, false);
+		
+		return inspector;
+	}
+
+
+
+
+	/**
+	 * Creates a new warning element.
+	 * @param {Number} count The number of pollutants.
+	 */
+	function createWarning (count) {
+		var text = count + ' variables in global namespace. ',
+			close = document.createElement ('a');
 
 		if (!warning) {
 			warning = document.createElement ('p');
@@ -223,8 +258,7 @@
 		
 		document.body.appendChild (warning);
 
-		text = count + ' variables in global namespace. ';
-		
+
 		if (count === 1) {
 			text = text.replace ('s', '');
 		} else if (count === 0) {
@@ -233,7 +267,7 @@
 		
 		warning.innerHTML = text;
 
-		close = document.createElement ('a');
+
 		close.href = '#';
 		close.innerHTML = 'Stop';
 		close.title = 'Stop monitoring';
@@ -248,13 +282,12 @@
 			if (e.stopPropagation) e.stopPropagation ();
 			e.cancelBubble = true;
 		}, false);
-		
+
 		warning.appendChild (close);
-		if (POP_UP) showDialog ();
 	}
 	
-	
 
+	
 
 	/**
 	 * Creates a new dialog box.
@@ -313,7 +346,7 @@
 	/**
 	 * Hides the dialog box.
 	 */
-	function hideDialog (event) {
+	function hideDialog () {
 		document.body.removeChild (dialog.mask);
 		interval = window.setInterval (checkNamespace, FREQUENCY);
 	}
@@ -322,10 +355,10 @@
 
 
 	/**
-	 * Opens up the variable inspector for a value listed in the dialog box.
-	 * @param {object} obj The object to inspect.
-	 * @param {HTMLDOMElement} parent The DOM element in which to insert the value description.
-	 * @param {string} name The name of the variable.
+	 * Opens up a variable inspector.
+	 * @param {Object} obj The object to inspect.
+	 * @param {HTMLElement} parent The DOM element in which to insert the value description.
+	 * @param {String} name The name of the variable.
 	 */
 	function displayValue (obj, parent, name) {
 		name = (name !== undefined)? '<span>' + name + ':</span> ' : '';
