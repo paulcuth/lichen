@@ -13,7 +13,7 @@ h1 {
 	color: #fff;
 	background-color: #ffa505;
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e09003), color-stop(1, #ffa505));
-	background-image: -moz-linear-gradient(top, #33aa33, #ffa505);
+	background-image: -moz-linear-gradient(top, #e09003, #ffa505);
 	font-family: monospace;
 	font-size: 100px;
 	line-height: 120px;
@@ -40,7 +40,7 @@ h1 {
 h2, h4 {
 	color: #435;
 	width: 750px;
-	margin: 60px auto 20px;
+	margin: 80px auto -10px;
 	font-size: 22px;
 	letter-spacing: 0.05em;	
 }
@@ -52,11 +52,15 @@ h2 {
 }
 
 p {
-	width: 750px;
-	margin: 40px auto;
+	clear: both;
+	margin: 40px 0;
 	line-height: 1.75em;
 }
 
+div.wrap {
+	width: 750px;
+	margin: 0 auto;
+}
 
 pre {
 	width: 750px;
@@ -66,20 +70,21 @@ pre {
 	padding: 20px;
 	font-size: .65em;
 	color: #444;
-	
+	position: relative;
+	left: -20px;
+}
+
+img {
+	margin: 0 auto -25px;
+	display: block;
 }
 
 a.bookmarklet {
 	display: inline-block;
-	font-family: Arial;
-	font-size: 12px;
-	line-height: 24px;
-	text-decoration: none;
-	color: #000;
-	background-color: #e4e4e4;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	padding: 0px 8px;
+	width: 135px;
+	height: 22px;
+	text-indent: -9999px;
+	background: url(../img/bookmarklet.png) top left no-repeat;
 }
 
 

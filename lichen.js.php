@@ -1,5 +1,5 @@
 <?
-	include ('./settings.php');
+	define ('SERVER_URL', 'http://paulcuth.me.uk');
 	header ('Content-type: text/javascript');
 	
 	$js = file_get_contents ('./lichen.js');

@@ -48,10 +48,12 @@ div.lichen-mask li {
 div.lichen-mask li p {
 	font-family: "cambria", "palatino", "georgia", "serif";
 	font-size: 16px;
+	line-height: 32px;
 	padding: 0 16px;
 	margin: 0;
 	cursor: pointer;
 	text-align: left;
+	width: auto;
 }
 	
 	
@@ -69,6 +71,7 @@ div.lichen-mask div.inspector {
 	padding: 0 8px;
 	overflow: hidden;
 	-webkit-transition: padding .1s linear;
+	font-size: 12px;
 }
 
 
@@ -86,12 +89,12 @@ div.lichen-mask div.inspector div {
 
 			
 div.lichen-mask div.inspector div.expandable {
-	background-image: url('./img/tree-plus.png');
+	background-image: url('../img/tree-plus.png');
 }
 
 			
 div.lichen-mask div.inspector div.expanded {
-	background-image: url('./img/tree-minus.png');
+	background-image: url('../img/tree-minus.png');
 	height: auto;
 }
 
@@ -132,19 +135,21 @@ div.lichen-mask span.lichen-description {
 
 
 div.lichen-mask span.loading {
-	background: url('./img/loading.gif') left center no-repeat;
+	background: url('../img/loading.gif') left center no-repeat;
 }
 
 
 div.lichen-mask button {
 	float: right;
 	margin: 4px 0 -4px;
+	padding: 2px 8px 3px;
 }
 
 
 p.lichen-warning {
 	font-family: "cambria", "palatino", "georgia", "serif";
 	font-size: 16px;
+	line-height: 24px;
 	margin: 0;
 	padding: 8px 16px;
 	position: fixed;
@@ -155,6 +160,7 @@ p.lichen-warning {
 	cursor: pointer;
 	border-radius: 0 0 0 8px;
 	z-index: 9998;
+	width: auto;
 }
 
 
@@ -163,7 +169,7 @@ p.lichen-warning a {
 	text-indent: -9999px;
 	height: 13px;
 	width: 13px;
-	background: url('./img/close.png') top left no-repeat;
+	background: url('../img/close.png') top left no-repeat;
 	position: relative;
 	left: 4px;
 	top: 1px;
