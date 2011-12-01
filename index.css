@@ -1,0 +1,92 @@
+body {
+	padding: 0;
+	margin: 0;
+	font-family: cambria, palatino, georgia, serif;
+	font-size: 17px;
+	color: #657;
+	line-height: 26px
+}
+
+
+h1 {
+	text-align: center;
+	color: #fff;
+	background-color: #ffa505;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e09003), color-stop(1, #ffa505));
+	background-image: -moz-linear-gradient(top, #33aa33, #ffa505);
+	font-family: monospace;
+	font-size: 100px;
+	line-height: 120px;
+	padding: 120px 0 20px;
+	margin: 0;
+	font-weight: normal;
+
+	/* Following 3D text effect courtesy of @mdo (http://markdotto.com/playground/3d-text/). Awesomesauce. */
+	text-shadow: 0 1px 0 #ccc, 
+				 0 2px 0 #c9c9c9,
+				 0 3px 0 #bbb,
+				 0 4px 0 #b9b9b9,
+				 0 5px 0 #aaa,
+				 0 6px 1px rgba(0,0,0,.1),
+				 0 0 5px rgba(0,0,0,.1),
+				 0 1px 3px rgba(0,0,0,.3),
+				 0 3px 5px rgba(0,0,0,.2),
+				 0 5px 10px rgba(0,0,0,.25),
+				 0 10px 10px rgba(0,0,0,.2),
+				 0 20px 20px rgba(0,0,0,.15);
+}
+
+
+h2, h4 {
+	color: #435;
+	width: 750px;
+	margin: 60px auto 20px;
+	font-size: 22px;
+	letter-spacing: 0.05em;	
+}
+
+
+h2 {
+	margin: 20px auto 40px;
+	text-align: center;
+}
+
+p {
+	width: 750px;
+	margin: 40px auto;
+	line-height: 1.75em;
+}
+
+
+pre {
+	width: 750px;
+	margin: -16px auto -6px;
+	background-color: #eee;
+	border: 1px dashed #bbb;
+	padding: 20px;
+	font-size: .65em;
+	color: #444;
+	
+}
+
+a.bookmarklet {
+	display: inline-block;
+	font-family: Arial;
+	font-size: 12px;
+	line-height: 24px;
+	text-decoration: none;
+	color: #000;
+	background-color: #e4e4e4;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 0px 8px;
+}
+
+
+footer {
+	display: block;
+}
+
+footer p {
+	text-align: center;
+}

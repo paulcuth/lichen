@@ -1,52 +1,55 @@
 <html>
 	<head>
 		<title>Lichen</title>
+		<link rel="stylesheet" href="./reset.css" />
+		<link rel="stylesheet" href="./index.css" />
 	</head>
 	
 	<body>
 		<h1>Lichen</h1>
-		<p>Global namespace monitor</p>
+		<h2>Global namespace monitor</h2>
 		
 		
-		<h3>The problem</h3>
 		<p>It's all too easy to use a variable name in JavaScript and forget to declare it properly. Maybe it was a typo, but nonetheless it's polluting the global namespace. Wouldn't it be great to be alerted as soon as something slips though the net?</p>
 		
-		<h3>The solution</h3>
 		<p>Lichen quietly monitors the global namespace and displays a message when an unknown variable appears. It can easily be configured to ignore those variables that are meant to be there.</p>
 		
 		
-		<h3>How do i use it?</h3>
-		<p>Simply include the Lichen script and use the query string to configure it, as follows:</p>
+		<p>Simply include the Lichen script in your header code on your development envirnoment and you'll be warned as soon as the rougue variable is created. You can customise Lichen's behaviour by altering the query string, as follows:</p>
 		
-		<h4>Including</h4>
+		<h4>Including Lichen in your page</h4>
 		<p>You can include the script in your page right now by inserting the following code:</p>
 		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php"&gt;&lt;/script&gt;</pre>
-		<p>Alternatively, you can <a>download it from GitHub</a> and host it yourself.</p>
+		<p>Alternatively, you can <a href="http://github.com/paulcuth/lichen" title="Go to the Lichen page on Github">download Lichen from GitHub</a> and host it yourself.</p>
 		
 		<h4>Configuring</h4>
 		<p>You can configure Lichen in several ways, including how to <span>ignore acceptable variables</span>:</p>
 		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php<span>?accept=$,jQuery,myLib</span>"&gt;&lt;/script&gt;</pre>
 
-		<p>You can configure Lichen to <span>check more or less freqently</span> (default is every 5 seconds):</p>
+		<p>Check more or less freqently (default is every 5000 milliseconds):</p>
 		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php?accept=$,jQuery,myLib<span>&frequency=1000</span>"&gt;&lt;/script&gt;</pre>
 		
-		<p>You can configure Lichen to <span>tolerate a certain number before warning</span> (default is zero):</p>
-		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php?accept=$,jQuery,myLib&<span>&tolerence=3</span>"&gt;&lt;/script&gt;</pre>
+		<p>Tolerate a certain number of rogue variables before warning (default is zero):</p>
+		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php?accept=$,jQuery,myLib<span>&tolerence=3</span>"&gt;&lt;/script&gt;</pre>
 		
-		<p>You can configure Lichen to <span>automatically show polluting variables</span>:</p>
-		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php?accept=$,jQuery,myLib&tolerence=3<span>&popup=1</span>"&gt;&lt;/script&gt;</pre>
+		<p>Automatically show polluting variables:</p>
+		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php?accept=$,jQuery,myLib<span>&popup=1</span>"&gt;&lt;/script&gt;</pre>
 		
-		<p>You can configure Lichen to <span>show the waring in a different place</span>:</p>
-		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php?accept=$,jQuery,myLib<span>&position=bottom-left</span>"&gt;&lt;/script&gt;</pre>
+		<p>Show the warning at a different position in the viewport:</p>
+		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php?accept=$,jQuery,myLib<span>&position=top-left</span>"&gt;&lt;/script&gt;</pre>
 		
-		<p>You can configure Lichen to <span>show a positive message when all is well</span>:</p>
+		<p>Show a positive message when all is well:</p>
 		<pre>&lt;script src="http://paulcuth.me.uk/lichen/lichen.js.php?accept=$,jQuery,myLib<span>&showok=1</span>"&gt;&lt;/script&gt;</pre>
 
 		
-		<h3>Bookmarklet</h3>
-		<p>If you want to check someone else's site, simply drag this bookmark the following link and click it when you're viewing another site. Alternatively, you can simply drag the link into your bookmarks bar:</p>
-		<p><a href="">Check global namespace</a></p>
+		<h4>Bookmarklet</h4>
+		<p>If you want to check the global namespace of a live site, simply drag the following link into your bookmarks bar and click it when you're visiting the site:</p>
+		<p><a class="bookmarklet" href="javascript:(function (){var s=document.createElement('script');s.src='http://paulcuth.me.uk/lichen/lichen.js.php';document.getElementsByTagName('head')[0].appendChild(s);})();">Check global namespace</a></p>
 		
+		<footer>
+			<p>Made by <a href="http://twitter.com/paulcuth">@paulcuth</a>.</p>
+		</footer>
+
 		
 	</body>
 </html>
