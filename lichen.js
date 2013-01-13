@@ -177,7 +177,10 @@
 			}
 		}
 
-		for (i in ok) dialog.list.appendChild (ok[i]);
+		for (i in ok) {
+			if (ok.hasOwnProperty(i)) dialog.list.appendChild (ok[i]);
+		}
+		
 		createWarning (count);
 		
 		if (POP_UP) showDialog ();
